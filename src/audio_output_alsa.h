@@ -17,30 +17,31 @@ limitations under the License.
 #ifndef SRC_ASSISTANT_AUDIO_OUTPUT_ALSA_H_
 #define SRC_ASSISTANT_AUDIO_OUTPUT_ALSA_H_
 
-#include <condition_variable>  // NOLINT
+#include <condition_variable>
 #include <memory>
-#include <mutex>   // NOLINT
-#include <thread>  // NOLINT
+#include <mutex>
+#include <thread>
 #include <vector>
 
 // Audio output using ALSA.
-class AudioOutputALSA {
- public:
-  bool Start();
+class AudioOutputALSA
+{
+public:
+	bool start();
 
-  void Stop();
+	void stop();
 
-  void Send(std::shared_ptr<std::vector<unsigned char>> data);
+	void send(std::shared_ptr<std::vector<unsigned char>> data);
 
-  friend void fill_audio(void* userdata, unsigned char* stream, int len);
+	// friend void fill_audio(void* userdata, unsigned char* stream, int len);
 
- private:
-  std::vector<std::shared_ptr<std::vector<unsigned char>>> audioData;
-  std::mutex audioDataMutex;
-  std::condition_variable audioDataCv;
-  std::unique_ptr<std::thread> alsaThread;
-  bool isRunning = false;
-  std::mutex isRunningMutex;
+private:
+	std::vector<std::shared_ptr<std::vector<unsigned char>>> audioData_;
+	std::mutex audioDataMutex_;
+	std::condition_variable audioDataCv_;
+	std::unique_ptr<std::thread> alsaThread_;
+	bool isRunning_ = false;
+	std::mutex isRunningMutex_;
 };
 
-#endif  // SRC_ASSISTANT_AUDIO_OUTPUT_ALSA_H_
+#endif // SRC_ASSISTANT_AUDIO_OUTPUT_ALSA_H_

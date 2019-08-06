@@ -14,10 +14,25 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#ifndef SRC_ASSISTANT_JSON_UTIL_H_
-#define SRC_ASSISTANT_JSON_UTIL_H_
+#ifndef SRC_ASSISTANT_AUDIO_INPUT_ALSA_H_
+#define SRC_ASSISTANT_AUDIO_INPUT_ALSA_H_
 
 #include <memory>
-#include <string>
 
-#endif  // SRC_ASSISTANT_JSON_UTIL_H_
+#include "audio_input.h"
+
+class AudioInputALSA : public AudioInput
+{
+public:
+	~AudioInputALSA() override = default;
+
+	std::unique_ptr<std::thread> getBackgroundThread() override;
+
+private:
+	// For 16000Hz, it's about 0.1 second.
+	static constexpr int framesPerPacket = 1600;
+	// 1 channel, S16LE, so 2 bytes each frame.
+	static constexpr int bytesPerFrame = 2;
+};
+
+#endif // SRC_ASSISTANT_AUDIO_INPUT_ALSA_H_
